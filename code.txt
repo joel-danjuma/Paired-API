@@ -1,0 +1,36 @@
+import mysql.connector
+
+# Connect to the database
+cnx = mysql.connector.connect(user='username', password='password', host='hostname', database='database_name')
+cursor = cnx.cursor()
+
+# Define the data to be stored
+data = {
+    'name': 'John Smith',
+    'age': 30,
+    'gender': 'male',
+    'occupation': 'software engineer',
+    'email': 'john@example.com',
+    'phone': '123-456-7890',
+    'location': 'San Francisco',
+    'bedrooms': 1,
+    'price_range': 2500,
+    'smoking': 'non-smoking',
+    'pets': 'no',
+    'move_in': '2022-01-01',
+    'duration': '6 months'
+}
+
+# Construct the INSERT statement
+columns = ', '.join(data.keys())
+placeholders = ', '.join(['%s'] * len(data))
+query = 'INSERT INTO apartment_seekers ({}) VALUES ({})'.format(columns, placeholders)
+
+# Execute the query
+cursor.execute(query, tuple(data.values()))
+
+# Commit the changes to the database
+cnx.commit()
+
+# Close the connection
+cnx.close()
