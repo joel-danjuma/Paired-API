@@ -35,6 +35,29 @@ def get_ads_for_user(
     return user_ads
 
 
+@router.put("/{id}")
+def update_ad_by_id(
+    ad_id: int,
+    ad: schemas.CreateRoomAd,
+    db: Session = Depends(get_db),
+    current_user: int = Depends(oauth2.get_current_user),
+):
+    ad_query = crud.get_post_by_id(ad_id, db).first()
+    if ad_query == None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Ad with id: {id} does not exist.",
+        )
+    if ad_query.owner_id != current_user:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"Not authorized to perform action",
+        )
+    ad_query.update(ad)
+    db.commit()
+    return ad_query
+
+
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_ad_by_id(
     ad_id: int,

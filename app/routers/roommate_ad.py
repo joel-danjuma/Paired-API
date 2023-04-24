@@ -18,7 +18,7 @@ def get_ads(
 
 
 # get ad by id
-@router.get("/{id}", response_model=schemas.Post)
+@router.get("/{id}", response_model=schemas.RoommateAd)
 def get_ad_by_id(
     id: int,
     db: Session = Depends(get_db),
@@ -39,14 +39,14 @@ def get_ad_by_id(
 
 
 # create new ad
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
+@router.post("/new", status_code=status.HTTP_201_CREATED)
 def create_ad(
-    post: schemas.CreateRoommateAd,
+    ad: schemas.CreateRoommateAd,
     db: Session = Depends(get_db),
     current_user: int = Depends(oauth2.get_current_user),
 ):
     user_id = current_user
-    new_post = crud.create_post(user_id, post, db)
+    new_post = crud.create_roommate_ad(user_id, ad, db)
     return new_post
 
 

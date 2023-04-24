@@ -11,7 +11,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, nullable=False)
     name = Column(String, nullable=False)
     age = Column(Integer, nullable=False)
-    gender = Column(Integer, nullable=False)
+    gender = Column(String, nullable=False)
     occupation = Column(String, nullable=False)
     phone = Column(Integer, nullable=False)
     email = Column(String, nullable=False, unique=True)

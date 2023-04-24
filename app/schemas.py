@@ -14,6 +14,9 @@ class RoommateAd(BaseModel):
     owner_id: int
     created_at: datetime
 
+    class config:
+        orm_mode = True
+
 
 class CreateRoommateAd(BaseModel):
     gender: str
@@ -24,17 +27,23 @@ class CreateRoommateAd(BaseModel):
 
 
 # USERS
-class UserBase(BaseModel):
+class CreateUser(BaseModel):
+    name: str
+    age: int
+    gender: str
+    occupation: str
+    phone: int
     email: EmailStr
     password: str
 
 
-class CreateUser(UserBase):
-    pass
-
-
 class User(BaseModel):
     id: int
+    name: str
+    age: int
+    gender: str
+    occupation: str
+    phone: int
     email: EmailStr
     created_at: datetime
 

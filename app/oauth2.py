@@ -45,7 +45,7 @@ def get_current_user(
         headers={"WWW-Authenticate": "Bearer"},
     )
     token_data = verify_access_token(token, "user", credentials_exception)
-    user = crud.get_users_by_id(token_data.id, db).first()
+    user = crud.get_user_by_id(token_data.id, db).first()
     return user.id
 
 

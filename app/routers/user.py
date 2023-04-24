@@ -10,7 +10,7 @@ router = APIRouter(prefix="/users", tags=["Users"])
 # get all users
 @router.get("/", response_model=List[schemas.User])
 def get_users(db: Session = Depends(get_db)):
-    users = crud.get_users(db)
+    users = crud.get_all_users(db)
     return users
 
 
@@ -18,7 +18,7 @@ def get_users(db: Session = Depends(get_db)):
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.User)
 def create_user(user: schemas.CreateUser, db: Session = Depends(get_db)):
     user.password = utils.hash(user.password)
-    db_user = crud.get_users_by_email(user.email, db)
+    db_user = crud.get_user_by_email(user.email, db)
     if db_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="The user already exists"
@@ -34,7 +34,7 @@ def delete_user_by_id(
     db: Session = Depends(get_db),
     current_user: int = Depends(oauth2.get_current_user),
 ):
-    user = crud.get_users_by_id(id, db)
+    user = crud.get_user_by_id(id, db)
     if user.first() == None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -52,7 +52,7 @@ def update_users_email_by_id(
     db: Session = Depends(get_db),
     current_user: int = Depends(oauth2.get_current_user),
 ):
-    user_query = crud.get_users_by_id(id, db)
+    user_query = crud.get_user_by_id(id, db)
     if user_query.first() == None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -72,7 +72,7 @@ def update_users_password_by_id(
     current_user: int = Depends(oauth2.get_current_user),
 ):
     user.password = utils.hash(user.password)
-    user_query = crud.get_users_by_id(id, db)
+    user_query = crud.get_user_by_id(id, db)
     if user_query.first() == None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
