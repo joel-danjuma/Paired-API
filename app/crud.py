@@ -55,5 +55,9 @@ def get_all_room_ads(db: Session):
     return db.query(models.RoomAd).all()
 
 
-def get_all_ads_for_user(user_id: int, db: Session):
+def get_all_room_ads_for_user(user_id: int, db: Session):
     return db.query(models.RoomAd).filter(models.RoomAd.owner_id == user_id).first()
+
+
+def get_room_ad_by_id(id: int, db: Session):
+    return db.query(models.RoomAd).filter(models.RoomAd.id == id)
